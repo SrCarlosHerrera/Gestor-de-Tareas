@@ -1,48 +1,35 @@
-// Variables y constantes
-const tasks = [];
-const MAX_TASKS = 5; // Constantes
+// tasks.js
+let tasks = [];
+let taskId = 1; // ID autoincremental
 
-// Función para agregar una tarea
-function addTask(task) {
-    if (tasks.length >= MAX_TASKS) {
-        console.log("No puedes agregar más tareas. Límite alcanzado.");
-        return;
-    }
+// Agregar una tarea
+const addTask = (description) => {
+    const task = { id: taskId++, description };
     tasks.push(task);
-    console.log(`Tarea "${task}" agregada.`);
-}
+    return task;
+};
 
-// Función para listar todas las tareas
-function listTasks() {
-    console.log("Lista de tareas:");
-    if (tasks.length === 0) {
-        console.log("No hay tareas.");
-    } else {
-        tasks.forEach((task, index) => {
-            console.log(`${index + 1}. ${task}`);
-        });
+// Listar todas las tareas
+const listTasks = () => tasks;
+
+// Eliminar una tarea por ID
+const removeTask = (id) => {
+    const index = tasks.findIndex(task => task.id === id);
+    if (index !== -1) {
+        return tasks.splice(index, 1)[0];
     }
-}
+    return null;
+};
 
-// Función para eliminar una tarea por su índice
-function removeTask(index) {
-    if (index < 0 || index >= tasks.length) {
-        console.log("Índice inválido.");
-        return;
+// Actualizar una tarea por ID
+const updateTask = (id, newDescription) => {
+    const task = tasks.find(task => task.id === id);
+    if (task) {
+        task.description = newDescription;
+        return task;
     }
-    const removed = tasks.splice(index, 1);
-    console.log(`Tarea "${removed}" eliminada.`);
-}
+    return null;
+};
 
-// Función para actualizar una tarea existente
-function updateTask(index, newTask) {
-    if (index >= 0 && index < tasks.length && newTask.trim() !== "") {
-        tasks[index] = newTask;
-        console.log(`Paseo Realizado: ${tasks[index]}`);
-    } else {
-        console.log("Error: Índice inválido o tarea no actualizada.");
-    }
-}
-
-// Exportaciones de funciones
+// Exportar funciones
 module.exports = { addTask, listTasks, removeTask, updateTask };
